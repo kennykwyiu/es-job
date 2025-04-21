@@ -4,9 +4,10 @@ import org.apache.commons.lang3.time.FastDateFormat;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.core.Ordered;
 
 @Aspect
-public class JobTraceInterceptor {
+public class JobTraceInterceptor implements Ordered {
     private static final FastDateFormat ISO_DATETIME_TIME_ZONE_FORMAT_WITH_MILLIS = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
 
     public JobTraceInterceptor() {
