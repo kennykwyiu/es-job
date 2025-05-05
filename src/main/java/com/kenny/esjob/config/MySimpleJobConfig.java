@@ -26,6 +26,33 @@ public class MySimpleJobConfig {
         return new MySimpleJob();
     }
 
+    @Bean(initMethod = "init")
+    public JobScheduler simpleJobScheduler(final SimpleJob simpleJob,
+                                           @Value("${simpleJob.cron}") final String cron,
+                                           @Value("${simpleJob.shardingTotalCount}") final int shardingTotalCount,
+                                           @Value("${simpleJob.shardingItemParameters}") final String shardingItemParameters,
+                                           @Value("${simpleJob.jobParameter}") final String jobParameter,
+                                           @Value("${simpleJob.failover}") final boolean failover,
+                                           @Value("${simpleJob.monitorExecution}") final boolean monitorExecution,
+                                           @Value("${simpleJob.monitorPort}") final int monitorPort,
+                                           @Value("${simpleJob.maxTimeDiffSeconds}") final int maxTimeDiffSeconds,
+                                           @Value("${simpleJob.jobShardingStrategyClass}") final String jobShardingStrategyClass) {
+
+        return new SpringJobScheduler(simpleJob,
+                registryCenter,
+                getLiteJobConfiguration(simpleJob.getClass(),
+                        cron,
+                        shardingTotalCount,
+                        shardingItemParameters,
+                        jobParameter,
+                        failover,
+                        monitorExecution,
+                        monitorPort,
+                        maxTimeDiffSeconds,
+                        jobShardingStrategyClass),
+                jobEventConfiguration,
+                new SimpleJobListener());
+    }
 
     private LiteJobConfiguration getLiteJobConfiguration(Class<? extends SimpleJob> jobClass, String cron,
                                                          int shardingTotalCount, String shardingItemParameters, String jobParameter, boolean failover,
